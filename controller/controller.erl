@@ -40,7 +40,7 @@
 -export([init/1, handle_call/3,handle_cast/2, handle_info/2, terminate/2, code_change/3]).
 
 -record(state, {
-		service_specs_info
+	
 	       }).
 
 %% ====================================================================
@@ -138,10 +138,10 @@ ping()->
 %%          {stop, Reason}
 %% --------------------------------------------------------------------
 init([]) ->
-  
+    
 %    spawn(fun()->do_desired_state() end),
 %    rpc:cast(node(),log,log,[?Log_info("server started",[])]),
-    {ok, #state{ service_specs_info=[]}
+    {ok, #state{}
     }.
 
 %% --------------------------------------------------------------------
@@ -157,11 +157,11 @@ init([]) ->
 
 
 handle_call({get_spec,Name,Vsn},_From, State) ->
-    Reply=lib_controller:get_spec(Name,Vsn,State#state.service_specs_info),
+    Reply=lib_controller:get_spec(Name,Vsn,State),
     {reply, Reply, State};
 
 handle_call({actual_state},_From, State) ->
-    Reply=lib_controller:actual_state(State#state.service_specs_info),
+    Reply=lib_controller:actual_state(State),
     {reply, Reply, State};
 
 handle_call({read_state},_From, State) ->
@@ -174,9 +174,6 @@ handle_call({ping},_From, State) ->
 handle_call({stopped},_From, State) ->
     Reply=ok,
     {reply, Reply, State};
-
-
-
 
 handle_call({not_implemented},_From, State) ->
     Reply=not_implemented,

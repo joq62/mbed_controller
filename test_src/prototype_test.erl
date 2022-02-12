@@ -106,19 +106,23 @@ appl_mgr()->
     % Test loader initiated in loader_init
     [H1|_]=test_nodes:get_nodes(),
     [LoaderVm]=rpc:call(H1,sd,get,[loader],5000),
-    {ok,"leader/1.0.0"}=rpc:call(LoaderVm,appl_mgr,get_appl_dir,[leader,"1.0.0"],5000),
+   
 %    ok=rpc:call(H1,appl_mgr,load_specs,[],5000),
 %    io:format(" ~p~n",[{rpc:call(LoaderVm,appl_mgr,get_all_appl_info,[],5000),?FUNCTION_NAME,?MODULE,?LINE}]),
- 
-    {ok,"leader/1.0.0"}=rpc:call(LoaderVm,appl_mgr,get_appl_dir,[leader,"1.0.0"],5000),
-    {ok,"leader/1.0.0"}=rpc:call(LoaderVm,appl_mgr,get_appl_dir,[leader,latest],5000),
+    {ok,AllInfo}=rpc:call(LoaderVm,appl_mgr,get_all_appl_info,[],5000),
+    [{{myadd,"1.0.0"},"myadd/1.0.0"},
+     {{mydivi,"1.0.0"},"mydivi/1.0.0"}]=lists:sort(AllInfo),
+
     {ok,"myadd/1.0.0"}=rpc:call(LoaderVm,appl_mgr,get_appl_dir,[myadd,"1.0.0"],5000),
     {ok,"myadd/1.0.0"}=rpc:call(LoaderVm,appl_mgr,get_appl_dir,[myadd,latest],5000),
    
 
    %get types info per ap constraints
-    {ok,"https://github.com/joq62/leader.git"}=rpc:call(LoaderVm,appl_mgr,get_info,[leader,"1.0.0",git_path],5000),
-    {ok,[]}=rpc:call(LoaderVm,appl_mgr,get_info,[leader,"1.0.0",constraints],5000),
+    {ok,"https://github.com/joq62/myadd.git"}=rpc:call(LoaderVm,appl_mgr,get_info,[myadd,"1.0.0",git_path],5000),
+    {ok,[]}=rpc:call(LoaderVm,appl_mgr,get_info,[myadd,"1.0.0",constraints],5000),
+    
+    {ok,"https://github.com/joq62/mydivi.git"}=rpc:call(LoaderVm,appl_mgr,get_info,[mydivi,"1.0.0",git_path],5000),
+    {ok,[{host,h202@c100}]}=rpc:call(LoaderVm,appl_mgr,get_info,[mydivi,"1.0.0",constraints],5000),
     
     ok.
 
@@ -223,11 +227,11 @@ setup()->
     [Vm1|_]=test_nodes:get_nodes(),
 
     Ebin="ebin",
-    
+  
+    ok=rpc:call(Vm1,boot_loader,do_clone_specs,[Vm1],5000),  
     true=rpc:call(Vm1,code,add_path,[Ebin],5000),
-    ok=rpc:call(Vm1,boot_loader,do_clone_specs,[Vm1],5000),
+  
     ok=rpc:call(Vm1,application,start,[controller],15000),
-    
     pong=rpc:call(Vm1,controller,ping,[],2000),
   
           

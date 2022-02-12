@@ -9,6 +9,6 @@
 {applications, [kernel,stdlib]},
 {mod, {controller_app,[]}},
 {start_phases, []},
-{git_path,"https://github.com/joq62/controller.git"},
+{git_path,"https://github.com/joq62/mbed_controller.git"},
 {constraints,[]}
 ]}.
