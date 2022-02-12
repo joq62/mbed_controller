@@ -34,16 +34,16 @@ read(AppFile,Type)->
     Result.
 
 read_app_file(AllInfo,all)->
-    {ok,AllInfo};
+    AllInfo;
 read_app_file([{application,App,_}],application)->
-    {ok,App};
+    App;
 read_app_file([{application,_,Info}],git_path) ->
     {git_path,GitPath}=lists:keyfind(git_path,1,Info),
-    {ok,GitPath};
+    GitPath;
 read_app_file([{application,_,Info}],Key) ->
    Result=case lists:keyfind(Key,1,Info) of
 	      {Key,Value}->
-		  {ok,Value};
+		  Value;
 	      false->
 		  {error,[eexists,Key,?FUNCTION_NAME,?MODULE,?LINE]}
 	  end,

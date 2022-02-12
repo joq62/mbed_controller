@@ -138,7 +138,8 @@ ping()->
 %%          {stop, Reason}
 %% --------------------------------------------------------------------
 init([]) ->
-    
+    StartRes=lib_controller:start_appl(),
+      io:format("StartRes ~p~n",[{StartRes,?FUNCTION_NAME,?MODULE,?LINE}]),
 %    spawn(fun()->do_desired_state() end),
 %    rpc:cast(node(),log,log,[?Log_info("server started",[])]),
     {ok, #state{}

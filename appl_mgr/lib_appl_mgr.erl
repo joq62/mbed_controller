@@ -153,9 +153,9 @@ git_load_app_specs([],LoadRes)->
     [{{App,Vsn},AppDir}||{ok,App,Vsn,AppDir}<-LoadRes];
 git_load_app_specs([{_File,FullPath}|T],Acc)->
     
-    {ok,App}=appfile:read(FullPath,application),
-    {ok,Vsn}=appfile:read(FullPath,vsn),
-    {ok,GitPath}=appfile:read(FullPath,git_path),
+    App=appfile:read(FullPath,application),
+    Vsn=appfile:read(FullPath,vsn),
+    GitPath=appfile:read(FullPath,git_path),
     AppTopDir=atom_to_list(App),
     AppDir=filename:join(AppTopDir,Vsn),
     NewAcc=case filelib:is_dir(AppTopDir) of

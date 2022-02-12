@@ -84,7 +84,7 @@ loader_vm()->
     [H1|_]=test_nodes:get_nodes(),
   %  ok=application:start(loader),
     [LoaderVm]=rpc:call(H1,sd,get,[loader],5000),
-    {ok,N1}=rpc:call(LoaderVm,loader,create,[],5000),
+    {ok,N1}=rpc:call(LoaderVm,loader,create,[],5000),  
     pong=net_adm:ping(N1),
     Test1=test_1@c100,
     {ok,Test1}=rpc:call(LoaderVm,loader,create,["test_1"],5000),
@@ -118,11 +118,11 @@ appl_mgr()->
    
 
    %get types info per ap constraints
-    {ok,"https://github.com/joq62/myadd.git"}=rpc:call(LoaderVm,appl_mgr,get_info,[myadd,"1.0.0",git_path],5000),
-    {ok,[]}=rpc:call(LoaderVm,appl_mgr,get_info,[myadd,"1.0.0",constraints],5000),
+    "https://github.com/joq62/myadd.git"=rpc:call(LoaderVm,appl_mgr,get_info,[myadd,"1.0.0",git_path],5000),
+    []=rpc:call(LoaderVm,appl_mgr,get_info,[myadd,"1.0.0",constraints],5000),
     
-    {ok,"https://github.com/joq62/mydivi.git"}=rpc:call(LoaderVm,appl_mgr,get_info,[mydivi,"1.0.0",git_path],5000),
-    {ok,[{host,h202@c100}]}=rpc:call(LoaderVm,appl_mgr,get_info,[mydivi,"1.0.0",constraints],5000),
+    "https://github.com/joq62/mydivi.git"=rpc:call(LoaderVm,appl_mgr,get_info,[mydivi,"1.0.0",git_path],5000),
+    [{host,h202@c100}]=rpc:call(LoaderVm,appl_mgr,get_info,[mydivi,"1.0.0",constraints],5000),
     
     ok.
 
