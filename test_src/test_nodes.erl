@@ -51,7 +51,7 @@ start_slave(NodeName)->
     Node=list_to_atom(NodeName++"@"++HostId),
     rpc:call(Node,init,stop,[]),
     Cookie=atom_to_list(erlang:get_cookie()),
-    Args="-pa ebin -setcookie "++Cookie,
+    Args="-pa ebin -config config/sys.config -setcookie "++Cookie,
     slave:start(HostId,NodeName,Args).
 
 start_nodes()->
