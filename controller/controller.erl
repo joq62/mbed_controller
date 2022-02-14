@@ -140,6 +140,8 @@ ping()->
 init([]) ->
     StartRes=lib_controller:start_appl(),
       io:format("StartRes ~p~n",[{StartRes,?FUNCTION_NAME,?MODULE,?LINE}]),
+    Res=rpc:call(node(),lib_controller,connect_nodes,[],5000),
+    io:format("connect  ~p~n",[{Res,?FUNCTION_NAME,?MODULE,?LINE}]),
 %    spawn(fun()->do_desired_state() end),
 %    rpc:cast(node(),log,log,[?Log_info("server started",[])]),
     {ok, #state{},0

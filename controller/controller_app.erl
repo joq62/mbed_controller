@@ -73,8 +73,6 @@ init()->
     ok=application:start(loader),
     ok=application:start(appl_mgr),
     ok=application:start(sd),
-    Res=rpc:call(node(),lib_controller,connect_nodes,[],5000),
-    io:format("connect  ~p~n",[{Res,?FUNCTION_NAME,?MODULE,?LINE}]),
     ok=application:start(host),
     
     ok.
