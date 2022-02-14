@@ -43,7 +43,7 @@ unit_test:
 #	flatlog
 #	cp flatlog/_build/default/lib/flatlog/ebin/* ebin;
 #	boot_loader
-#	cp boot_loader/src/*.app ebin;
+#	cp boot_loader/src/*.app ebin;2
 	erlc -D unit_test -I ../infra/log_server/include -I include -o ebin boot_loader/*.erl;
 #	loader
 	cp loader/*.app ebin;
@@ -51,6 +51,9 @@ unit_test:
 #	appl_mgr
 	cp appl_mgr/*.app ebin;
 	erlc -D unit_test -I ../infra/log_server/include -I include -o ebin appl_mgr/*.erl;
+#	leader
+	cp ../leader/src/*.app ebin;
+	erlc -D unit_test -I ../infra/log_server/include -I include -o ebin ../leader/src/*.erl;
 #	host
 	cp host/*.app ebin;
 	erlc -D unit_test -I ../infra/log_server/include -I include -o ebin host/*.erl;

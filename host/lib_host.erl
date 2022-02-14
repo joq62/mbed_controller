@@ -30,6 +30,9 @@
 %% External functions
 %% ====================================================================
 
+
+%my_ssh:ssh_send("192.168.0.203",22,"pi","festum01","./compute_start.sh",5000).
+
 %% --------------------------------------------------------------------
 %% Function:start/0 
 %% Description: Initiate the eunit tests, set upp needed processes etc

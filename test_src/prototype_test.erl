@@ -123,7 +123,7 @@ appl_mgr()->
     []=rpc:call(LoaderVm,appl_mgr,get_info,[myadd,"1.0.0",constraints],5000),
     
     "https://github.com/joq62/mydivi.git"=rpc:call(LoaderVm,appl_mgr,get_info,[mydivi,"1.0.0",git_path],5000),
-    [{host,h202@c100}]=rpc:call(LoaderVm,appl_mgr,get_info,[mydivi,"1.0.0",constraints],5000),
+    [{host,"c201"}]=rpc:call(LoaderVm,appl_mgr,get_info,[mydivi,"1.0.0",constraints],5000),
     
     ok.
 
