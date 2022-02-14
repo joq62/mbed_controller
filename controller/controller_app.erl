@@ -77,5 +77,6 @@ init()->
     io:format("connect  ~p~n",[{Res,?FUNCTION_NAME,?MODULE,?LINE}]),
     ok=application:start(host),
     ok=application:set_env([{leader,[{application,loader}]}]),
-    ok=application:start(leader),
+    spawn(application,start,[leader]),
+    
     ok.
