@@ -210,7 +210,7 @@ handle_cast(Msg, State) ->
 %% --------------------------------------------------------------------
 handle_info(timeout, State) ->
     ok=application:set_env([{leader,[{application,loader}]}]),
-    spawn(application,start,[leader]),
+    rpc:cast(node(),application,start,[leader]),
     
     {noreply, State};
 
