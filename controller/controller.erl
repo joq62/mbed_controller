@@ -142,7 +142,7 @@ init([]) ->
       io:format("StartRes ~p~n",[{StartRes,?FUNCTION_NAME,?MODULE,?LINE}]),
 %    spawn(fun()->do_desired_state() end),
 %    rpc:cast(node(),log,log,[?Log_info("server started",[])]),
-    {ok, #state{}
+    {ok, #state{},0
     }.
 
 %% --------------------------------------------------------------------
@@ -208,8 +208,14 @@ handle_cast(Msg, State) ->
 %%          {noreply, State, Timeout} |
 %%          {stop, Reason, State}            (terminate/2 is called)
 %% --------------------------------------------------------------------
+handle_info(timeout, State) ->
+    ok=application:set_env([{leader,[{application,loader}]}]),
+    spawn(application,start,[leader]),
+    
+    {noreply, State};
+
 handle_info(Info, State) ->
-    rpc:cast(node(),log,log,[?Log_ticket("unmatched info",[Info])]),
+    glurk=io:format("Info ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ ~p~n",[{Info,?FUNCTION_NAME,?MODULE,?LINE}]),
     {noreply, State}.
 
 %% --------------------------------------------------------------------

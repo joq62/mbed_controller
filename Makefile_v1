@@ -64,6 +64,7 @@ unit_test:
 	cp test_src/*.app test_ebin;
 	erlc -D unit_test -I ../infra/log_server/include -I include -o test_ebin test_src/*.erl;
 	erl -pa ebin -pa test_ebin\
+	    -config config/sys.config\
 	    -setcookie cookie_test\
 	    -sname test\
 	    -unit_test monitor_node test\

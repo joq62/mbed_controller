@@ -76,7 +76,5 @@ init()->
     Res=rpc:call(node(),lib_controller,connect_nodes,[],5000),
     io:format("connect  ~p~n",[{Res,?FUNCTION_NAME,?MODULE,?LINE}]),
     ok=application:start(host),
-    ok=application:set_env([{leader,[{application,loader}]}]),
-    spawn(application,start,[leader]),
     
     ok.

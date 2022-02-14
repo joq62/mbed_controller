@@ -222,8 +222,7 @@ service()->
 setup()->
    % suppor debugging
     ok=application:start(sd),
-
-    % Simulate host
+						% Simulate host
     ok=test_nodes:start_nodes(),
     [Vm1|_]=test_nodes:get_nodes(),
 
@@ -234,7 +233,8 @@ setup()->
   
     ok=rpc:call(Vm1,application,start,[controller],15000),
     pong=rpc:call(Vm1,controller,ping,[],2000),
-  
+    
+ 
           
    
     ok.
