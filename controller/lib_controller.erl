@@ -31,16 +31,17 @@
 %% External functions
 %% ====================================================================
 start_appl()->
-   % MyNode=node(),
-    {ok,HostName}=net:gethostname(),
+    MyNode=node(),
+  %  {ok,HostName}=net:gethostname(),
     {ok,AllInfo}=rpc:call(node(),appl_mgr,get_all_appl_info,[],5000),
 
-    Z=[{App,Vsn,HostName,rpc:call(node(),appl_mgr,get_info,[App,Vsn,constraints],5000)}||{{App,Vsn},_}<-AllInfo],
+    Z=[{App,Vsn,MyNode,rpc:call(node(),appl_mgr,get_info,[App,Vsn,constraints],5000)}||{{App,Vsn},_}<-AllInfo],
     io:format("HostName,constraints ~p~n",[{Z,?FUNCTION_NAME,?MODULE,?LINE}]),
 
     L1=[{App,Vsn}||{{App,Vsn},_}<-AllInfo,
-		   lists:member({host,HostName},rpc:call(node(),appl_mgr,get_info,[App,Vsn,constraints],5000))],
-     	%			lists:member({host,MyNode},rpc:call(node(),appl_mgr,get_info,[App,Vsn,constraints],5000))],
+		   lists:member({host,MyNode},rpc:call(node(),appl_mgr,get_info,[App,Vsn,constraints],5000))],
+%		   lists:member({host,HostName},rpc:call(node(),appl_mgr,get_info,[App,Vsn,constraints],5000))],
+     			
     L2=[{App,Vsn}||{{App,Vsn},_}<-AllInfo,
 		   []=:=rpc:call(node(),appl_mgr,get_info,[App,Vsn,constraints],5000)],
     ApplToStart=lists:append(L1,L2),
