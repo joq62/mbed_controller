@@ -15,6 +15,9 @@ all:
 #	boot_loader
 #	cp boot_loader/src/*.app ebin;
 	erlc -I ../infra/log_server/include -I include -o ebin boot_loader/*.erl;
+#	leader
+	cp ../leader/src/*.app ebin;
+	erlc -I ../infra/log_server/include -I include -o ebin ../leader/src/*.erl;
 #	loader
 	cp loader/*.app ebin;
 	erlc -I ../infra/log_server/include -I include -o ebin loader/*.erl;
