@@ -71,3 +71,5 @@ unit_test:
 	    -unit_test cluster_id test\
 	    -unit_test cookie cookie_test\
 	    -run unit_test start_test test_src/test.config
+fun_test:
+	erl -sname a -setcookie cookie_test -hidden
