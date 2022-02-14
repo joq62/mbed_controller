@@ -23,8 +23,8 @@
 
 %% External exports
 -export([
+	 desired_state/0,
 	 filter/2,
-
 	 capabilites_all/0,
 	 get_node/1,
 	 
@@ -61,6 +61,16 @@ stop()-> gen_server:call(?SERVER, {stop},infinity).
 %% ====================================================================
 %% Application handling
 %% ====================================================================
+%%---------------------------------------------------------------
+%% Function: desired_state()
+%% @doc: check missing host nodes and startst them      
+%% @param: non
+%% @returns: ok
+%%
+%%---------------------------------------------------------------
+-spec desired_state()->atom().
+desired_state()->
+    gen_server:cast(?SERVER, {desired_state}).
 
 %%---------------------------------------------------------------
 %% Function: filter(Affinity,Constraints)
@@ -136,7 +146,6 @@ init([]) ->
     HostSpecsInfo=lib_host:read_specs(),
   %  io:format("Type ~p~n",[{Type,?FUNCTION_NAME,?MODULE,?LINE}]),
     
-%    spawn(fun()->do_desired_state() end),
 %    rpc:cast(node(),log,log,[?Log_info("server started",[])]),
     {ok, #state{host_specs=HostSpecsInfo}
     }.
@@ -200,6 +209,10 @@ handle_call(Request, From, State) ->
 %%          {noreply, State, Timeout} |
 %%          {stop, Reason, State}            (terminate/2 is called)
 %% --------------------------------------------------------------------
+handle_cast({desired_state}, State) ->
+    rpc:call(node(),lib_host,desired_state,[State#state.host_specs],30*1000),
+    {noreply, State};
+
 handle_cast(Msg, State) ->
     rpc:cast(node(),log,log,[?Log_ticket("unmatched cast",[Msg])]),
     {noreply, State}.

@@ -17,6 +17,7 @@
 %-compile(export_all).
 
 -export([
+	 desired_state/1,
 	 filter/3,
 	 read_specs/0,
 	 get_node/2,
@@ -31,7 +32,27 @@
 %% ====================================================================
 
 
-%my_ssh:ssh_send("192.168.0.203",22,"pi","festum01","./compute_start.sh",5000).
+desired_state(HostSpecs)->
+    desired_state(HostSpecs,[]).
+
+desired_state([],Result)->
+    Result;
+desired_state([HostSpec|T],Acc)->
+    Hostname=proplists:get_value(hostname,HostSpec),
+    Node=proplists:get_value(node,HostSpec),
+    Ip=proplists:get_value(ip,HostSpec),
+    Port=proplists:get_value(ssh_port,HostSpec),
+    Uid=proplists:get_value(uid,HostSpec),
+    Pwd=proplists:get_value(pwd,HostSpec),
+    NewAcc=case net_adm:ping(Node) of 
+	       pong->
+		   Acc;
+	       pang ->
+		   ssh:start(),
+		   my_ssh:ssh_send(Ip,Port,Uid,Pwd,"./compute_start.sh",5000),
+		   [{restarted,Hostname}|Acc]
+	   end,
+    desired_state(T,NewAcc).
 
 %% --------------------------------------------------------------------
 %% Function:start/0 

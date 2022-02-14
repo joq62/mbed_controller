@@ -15,6 +15,7 @@
 %% Include files
 %% --------------------------------------------------------------------
 -include("log.hrl").
+-include("configs.hrl").
 -include_lib("kernel/include/logger.hrl").
 %% --------------------------------------------------------------------
 -define(SERVER,?MODULE).
@@ -22,6 +23,7 @@
 
 %% External exports
 -export([
+	 desired_state/0,
 	 get_spec/2,
 	 actual_state/0,
 	 load_read_specs/0,
@@ -59,6 +61,17 @@ stop()-> gen_server:call(?SERVER, {stop},infinity).
 %% ====================================================================
 %% Application handling
 %% ====================================================================
+%%---------------------------------------------------------------
+%% Function: desired_state()
+%% @doc: check missing host nodes and startst them      
+%% @param: non
+%% @returns: ok
+%%
+%%---------------------------------------------------------------
+-spec desired_state()->atom().
+desired_state()->
+    gen_server:cast(?SERVER, {desired_state}).
+
 %%---------------------------------------------------------------
 %% Function: get_spec(Name,Vsn)
 %% @doc: retreive Service info        
@@ -142,7 +155,7 @@ init([]) ->
       io:format("StartRes ~p~n",[{StartRes,?FUNCTION_NAME,?MODULE,?LINE}]),
     Res=rpc:call(node(),lib_controller,connect_nodes,[],5000),
     io:format("connect  ~p~n",[{Res,?FUNCTION_NAME,?MODULE,?LINE}]),
-%    spawn(fun()->do_desired_state() end),
+    spawn(fun()->do_desired_state() end),
 %    rpc:cast(node(),log,log,[?Log_info("server started",[])]),
     {ok, #state{},0
     }.
@@ -199,6 +212,10 @@ handle_call(Request, From, State) ->
 %% --------------------------------------------------------------------
 
 
+handle_cast({desired_state}, State) ->
+    spawn(fun()->do_desired_state() end),
+    {noreply, State};
+
 handle_cast(Msg, State) ->
     rpc:cast(node(),log,log,[?Log_ticket("unmatched cast",[Msg])]),
     {noreply, State}.
@@ -239,5 +256,13 @@ code_change(_OldVsn, State, _Extra) ->
 %% --------------------------------------------------------------------
 %%% Internal functions
 %% --------------------------------------------------------------------
-
-		  
+do_desired_state()->
+    timer:sleep(?DesiredStateInterval),
+    
+    case leader:am_i_leader(node()) of
+	false->
+	    do_nothing;
+	true ->
+	    rpc:cast(node(),host,desired_state,[])
+    end,
+    rpc:cast(node(),controller,desired_state,[]).
