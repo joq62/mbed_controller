@@ -144,6 +144,7 @@ ping()->
 %% --------------------------------------------------------------------
 init([]) ->
     HostSpecsInfo=lib_host:read_specs(),
+    ssh:start(),
   %  io:format("Type ~p~n",[{Type,?FUNCTION_NAME,?MODULE,?LINE}]),
     
 %    rpc:cast(node(),log,log,[?Log_info("server started",[])]),
