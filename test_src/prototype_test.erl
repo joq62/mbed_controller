@@ -33,29 +33,29 @@ start()->
     ok=setup(),
     io:format("~p~n",[{"Stop setup",?MODULE,?FUNCTION_NAME,?LINE}]),
 
-%    io:format("~p~n",[{"Start boot()",?MODULE,?FUNCTION_NAME,?LINE}]),
-%    ok= boot(),
-%    io:format("~p~n",[{"Stop  boot()",?MODULE,?FUNCTION_NAME,?LINE}]),
+    io:format("~p~n",[{"Start host()",?MODULE,?FUNCTION_NAME,?LINE}]),
+    ok= host(),
+    io:format("~p~n",[{"Stop  host()",?MODULE,?FUNCTION_NAME,?LINE}]),
 
 %    io:format("~p~n",[{"Start start_script()",?MODULE,?FUNCTION_NAME,?LINE}]),
 %    ok=start_script(),
 %    io:format("~p~n",[{"Stop  start_script()",?MODULE,?FUNCTION_NAME,?LINE}]),
 
     io:format("~p~n",[{"Start loader_vm()",?MODULE,?FUNCTION_NAME,?LINE}]),
-    ok= loader_vm(),
+%    ok= loader_vm(),
     io:format("~p~n",[{"Stop  loader_vm()",?MODULE,?FUNCTION_NAME,?LINE}]),
 
     io:format("~p~n",[{"Start appl_mgr()",?MODULE,?FUNCTION_NAME,?LINE}]),
-    ok= appl_mgr(),
+%    ok= appl_mgr(),
     io:format("~p~n",[{"Stop  appl_mgr()",?MODULE,?FUNCTION_NAME,?LINE}]),
 
     io:format("~p~n",[{"Start loader_appl()",?MODULE,?FUNCTION_NAME,?LINE}]),
-    ok= loader_appl(),
+%    ok= loader_appl(),
     io:format("~p~n",[{"Stop  loader_appl()",?MODULE,?FUNCTION_NAME,?LINE}]),
 
 
     io:format("~p~n",[{"Start service()",?MODULE,?FUNCTION_NAME,?LINE}]),
-    ok=service(),
+%    ok=service(),
     io:format("~p~n",[{"Stop  service()",?MODULE,?FUNCTION_NAME,?LINE}]),
 
  %   
@@ -73,7 +73,15 @@ start()->
 %% Description: Initiate the eunit tests, set upp needed processes etc
 %% Returns: non
 %% -------------------------------------------------------------------
+host()->
+    ok=application:start(host),
+    host:desired_state(),
     
+    %timer:sleep(5000),
+  
+   % init:stop(),
+   % timer:sleep(1500),
+    ok.
 %% --------------------------------------------------------------------
 %% Function:start/0 
 %% Description: Initiate the eunit tests, set upp needed processes etc
@@ -231,8 +239,8 @@ setup()->
     ok=rpc:call(Vm1,boot_loader,do_clone_specs,[Vm1],5000),  
     true=rpc:call(Vm1,code,add_path,[Ebin],5000),
   
-    ok=rpc:call(Vm1,application,start,[controller],15000),
-    pong=rpc:call(Vm1,controller,ping,[],2000),
+ %   ok=rpc:call(Vm1,application,start,[controller],15000),
+ %   pong=rpc:call(Vm1,controller,ping,[],2000),
     
  
           

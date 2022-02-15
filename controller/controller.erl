@@ -258,7 +258,6 @@ code_change(_OldVsn, State, _Extra) ->
 %% --------------------------------------------------------------------
 do_desired_state()->
     timer:sleep(?DesiredStateInterval),
-    
     case leader:am_i_leader(node()) of
 	false->
 	    do_nothing;
