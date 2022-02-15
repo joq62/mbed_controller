@@ -39,7 +39,7 @@ desired_state([],Result)->
     Result;
 desired_state([HostSpec|T],Acc)->
     Hostname=proplists:get_value(hostname,HostSpec),
- Node=proplists:get_value(node,HostSpec),   
+    Node=proplists:get_value(node,HostSpec),   
     NewAcc=case Node=:=node() of
 	       true->
 		   Acc;
@@ -48,15 +48,14 @@ desired_state([HostSpec|T],Acc)->
 		   Port=proplists:get_value(ssh_port,HostSpec),
 		   Uid=proplists:get_value(uid,HostSpec),
 		   Pwd=proplists:get_value(pwd,HostSpec),
-    		   io:format("Ip,Port,Uid,Pwd ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ ~p~n",[{Ip,Port,Uid,Pwd,?MODULE,?LINE}]),
-    		   case net_adm:ping(Node) of 
+		   case net_adm:ping(Node) of 
 		       pong->
+			   io:format("Node,Ip,Port,Uid,Pwd PONG_PONG_PONG ~p~n",[{Node,Ip,Port,Uid,Pwd,?MODULE,?LINE}]),
 			   Acc;
 		       pang ->
+			   io:format("Node,Ip,Port,Uid,Pwd PANG_PANG_PANG_PANG_PANG ~p~n",[{Node,Ip,Port,Uid,Pwd,?MODULE,?LINE}]),
 			   ssh:start(),
 			   Res=my_ssh:ssh_send(Ip,Port,Uid,Pwd,"./compute_start.sh",15000),
-			   io:format("Res ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤~p~n",[{Res,?MODULE,?LINE}]),
-			   
 			   [{restarted,Hostname}|Acc]
 		   end
 	   end,
