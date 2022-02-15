@@ -51,10 +51,10 @@ desired_state([HostSpec|T],Acc)->
 	       pong->
 		   Acc;
 	       pang ->
-	%	   ssh:start(),
-	%	   Res=my_ssh:ssh_send(Ip,Port,Uid,Pwd,"./compute_start.sh",15000),
-	%	   io:format("Res ~p~n",[{Res,?MODULE,?LINE}]),
-		   io:format("pang ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤~p~n",[{?MODULE,?LINE}]),
+		   ssh:start(),
+		   Res=my_ssh:ssh_send(Ip,Port,Uid,Pwd,"./compute_start.sh",15000),
+		   io:format("Res ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤~p~n",[{Res,?MODULE,?LINE}]),
+		  
 		   [{restarted,Hostname}|Acc]
 	   end,
     desired_state(T,NewAcc).
