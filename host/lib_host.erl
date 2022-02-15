@@ -55,7 +55,7 @@ desired_state([HostSpec|T],Acc)->
 		       pang ->
 			   io:format("Node,Ip,Port,Uid,Pwd PANG_PANG_PANG_PANG_PANG ~p~n",[{Node,Ip,Port,Uid,Pwd,?MODULE,?LINE}]),
 			   ssh:start(),
-			   Res=rpc:call(node(),my_ssh,ssh_send,[Ip,Port,Uid,Pwd,"sudo ./compute_start.sh",15000],15500),
+			   Res=rpc:call(node(),my_ssh,ssh_send,[Ip,Port,Uid,Pwd,"/home/pi/compute_start.sh",15000],15500),
 			   timer:sleep(5000),
 			   [{restarted,Hostname}|Acc]
 		   end
