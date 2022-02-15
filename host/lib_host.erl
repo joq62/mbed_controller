@@ -45,15 +45,16 @@ desired_state([HostSpec|T],Acc)->
     Uid=proplists:get_value(uid,HostSpec),
     Pwd=proplists:get_value(pwd,HostSpec),
     
-    io:format("Ip,Port,Uid,Pwd ~p~n",[{Ip,Port,Uid,Pwd,?MODULE,?LINE}]),
+    io:format("Ip,Port,Uid,Pwd ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ ~p~n",[{Ip,Port,Uid,Pwd,?MODULE,?LINE}]),
     
     NewAcc=case net_adm:ping(Node) of 
 	       pong->
 		   Acc;
 	       pang ->
-		   ssh:start(),
-		   Res=my_ssh:ssh_send(Ip,Port,Uid,Pwd,"./compute_start.sh",15000),
-		   io:format("Res ~p~n",[{Res,?MODULE,?LINE}]),
+	%	   ssh:start(),
+	%	   Res=my_ssh:ssh_send(Ip,Port,Uid,Pwd,"./compute_start.sh",15000),
+	%	   io:format("Res ~p~n",[{Res,?MODULE,?LINE}]),
+		   io:format("pang ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤~p~n",[{?MODULE,?LINE}]),
 		   [{restarted,Hostname}|Acc]
 	   end,
     desired_state(T,NewAcc).
