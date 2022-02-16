@@ -102,4 +102,18 @@ host_test:
 	    -unit_test cookie cookie_test\
 	    -run unit_test start_test test_src/test.config
 fun_test:
-	erl -sname a -setcookie cookie_test
+	rm -rf ebin/* src/*.beam *.beam test_src/*.beam test_ebin;
+	rm -rf  *~ */*~  erl_cra*;
+	rm -rf leader myadd mydivi sd service;
+	rm -rf appl_specs host_specs;
+	mkdir test_ebin;
+#	common
+	cp ../common/src/*.app ebin;
+	erlc -I ../infra/log_server/include -o ebin ../common/src/*.erl;
+#	flatlog
+#	cp flatlog/_build/default/lib/flatlog/ebin/* ebin;
+#	sd
+	cp ../sd/src/*.app test_ebin;
+	erlc -I ../infra/log_server/include -o test_ebin ../sd/src/*.erl;
+	erlc -o test_ebin test_src/fun_test.erl; 
+	erl -pa test_ebin -sname a -s fun_test start -setcookie cookie_test
